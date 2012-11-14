@@ -1,0 +1,49 @@
+<!DOCTYPE HTML>
+<html>
+  <head runat="server">
+    <meta name="viewport" content="width=320; user-scalable=no" />
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <script type="text/javascript" charset="utf-8" src="cordova-1.8.1.js"></script>
+    <script type="text/javascript" charset="utf-8" src="main.js"></script>
+	<link rel="stylesheet" type="text/css" href="style.css" />
+	<title>Employee Details</title>
+	<!--Google CDN jQuery w/local fallback-->
+	<script src="jquery.js"></script>
+	<script>!window.jQuery && document.write(unescape('%3Cscript src="js/libs/jquery-1.5.1.min.js"%3E%3C/script%3E'))</script>
+  </head>
+  
+  <body onload="init();">
+	<header>
+		<h1><a href="index.html" class="homeButton"></a>Employee Details</h1>
+	</header>
+	<div id="wrapper">
+		<section id="employeeInfo">
+			<p id="loading">Loading Information</p>
+		</section>
+	</div>
+	
+	<div id = "employees" class = "theme">
+		<ul id="employeeList" data-role="listview" type="none" list-style = "none"></ul>
+	</div>
+	<script >
+		$(document).ready(function () {
+			url = 'http://www4.esu.edu/admin_panel/index.php/api/directory_people/' + window.localStorage.getItem("key");
+			$.getJSON(url, function(data) {
+				var items = [];
+				$.each(data, function(i, employee) {
+					var employeeHTML = 
+						'<h1>' + employee.name + '</h1>'+
+						'<p>' + employee.title + '</p>' + 
+						'<p><a href="mailto:' + employee.email + '">' + employee.email + '</a></p>' + 
+						'<p><a href="tel:' + employee.work_phone + '">' + employee.work_phone + '</a></p>' +
+						'<p>' + employee.address + '</p>';
+						
+					items.push(employeeHTML);
+				});
+				$('#employeeInfo').empty();
+				$('#employeeInfo').append( items.join('') );
+			});
+		});
+	</script>
+  </body>
+</html>

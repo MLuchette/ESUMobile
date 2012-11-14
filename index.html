@@ -1,0 +1,62 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<!--<!doctype html>
+<html>
+	<head>
+		<title>ESU MOBILE</title>
+		<script>
+			window.location='main.html';
+		</script>
+	<body>		
+	</body>
+</html>-->
+	<meta name="viewport" content="width=320; user-scalable=no" />
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <script type="text/javascript" charset="utf-8" src="cordova-1.8.1.js"></script>
+    <script type="text/javascript" charset="utf-8" src="main.js"></script>
+	<link rel="stylesheet" type="text/css" href="style.css" />
+	<!--<script type="text/javascript" src="/cssrefresh.js"></script>-->
+	<title>ESU Mobile</title>
+	<!--Google CDN jQuery w/local fallback-->
+	<script src="jquery.js"></script>
+	<script>!window.jQuery && document.write(unescape('%3Cscript src="js/libs/jquery-1.5.1.min.js"%3E%3C/script%3E'))</script>
+</head>
+<body onload="init();">
+	<header>
+		<h1><a href="index.html">ESU Mobile</a></h1>
+	</header>
+	<!--<a id="adLink" href="#">-->
+		<div id="adBackground"><div><p id="adCaption"></p></div></div>
+	<!--</a>-->
+	<div id="wrapper" class="width100">
+		<div id="icons">
+			<a href="directory.html" class="icon"><img src="images/icons/directory.jpg"/></a>
+			<a href="news.html" class="icon"><img src="images/icons/news.jpg"/></a>
+			<a href="https://esu.desire2learn.com/" class="icon"><img src="images/icons/d2l.jpg"/></a>
+			<a href="http://www.esu.edu/live/" class="icon"><img src="images/icons/email.jpg"/></a>
+			<a href="http://myesu.esu.edu/" class="icon"><img src="images/icons/myesu.jpg"/></a>
+			<a href="social.html" class="icon"><img src="images/icons/socialmedia.jpg"/></a>
+			<a href="map.html" class="icon"><img src="images/icons/map.jpg"/></a>
+			<a href="http://www.esu.edu" class="icon"><img src="images/icons/home.jpg"/></a>
+		</div>
+	</div>
+	
+	<script>
+		$(document).ready(function () {
+			url = 'http://www4.esu.edu/admin_panel/index.php/api/mobileFeature';
+			$.getJSON(url, function(data) {
+				var items = [];
+				$.each(data, function(i, advertisement) {
+					$('#adCaption').text(advertisement.caption);
+					var image = "http://www4.esu.edu/admin_panel/assets/uploads/files/"+advertisement.image;
+					$('#adBackground').css("background","url("+image+") no-repeat center white");
+					$('#adLink').attr('href',advertisement.link);
+				});
+			});
+		});
+	
+	</script>
+</body>
+		
+</html>

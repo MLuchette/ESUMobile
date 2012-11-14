@@ -1,0 +1,79 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta name="viewport" content="width=320; user-scalable=no" />
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <script type="text/javascript" charset="utf-8" src="cordova-1.8.1.js"></script>
+    <script type="text/javascript" charset="utf-8" src="main.js"></script>
+	<link rel="stylesheet" type="text/css" href="style.css" />
+	<title>ESU Insider</title>
+	<!--Google CDN jQuery w/local fallback-->
+	<script src="jquery.js"></script>
+	<script>!window.jQuery && document.write(unescape('%3Cscript src="js/libs/jquery-1.5.1.min.js"%3E%3C/script%3E'))</script>
+	
+</head>
+<body onload="init();">
+	<header>
+		<h1><a href="index.html" class="homeButton"></a>ESU Insider</h1>
+	</header>
+	<a href="#" id="refreshNews" class="button">Refresh News</a>
+	
+	<div id="wrapper">
+		<section id="results">
+			<p id="loading">Loading</p>
+			<ul id="news"></ul>
+			<p><a href="http://www4.esu.edu">Visit the ESU Insider</a></p>
+		</section>
+	</div>
+	
+	<script>
+		$(document).ready(function(){
+			$('#refreshNews').click(function(){
+				refresh();
+			});
+		
+			var time = new Date();
+			var hour = time.getHours();
+			if(window.localStorage.getItem("time") != -1){
+				if((hour - (window.localStorage.getItem("time"))) > 3){
+					refresh();
+				}else{
+					var items = window.localStorage.getItem("news");
+					var items = items.replace(/,<li>/g,"<li>");
+					$('#news').empty();
+					$('#loading').hide();
+					$('#news').append( items );
+				}
+			}
+			else {
+				refresh();
+			}
+		});
+	</script>
+	<script>
+		function refresh(){
+			var time = new Date();
+			var hour = time.getHours();
+			var url = 'http://www4.esu.edu/admin_panel/index.php/api/news/';
+			$.getJSON(url, function(data) {
+				var items = [];
+				$.each(data, function(i, news) {
+					items.push('<li><a href="#" onclick="getArticle('+news.ID+')">'+news.title+'</a></li>');
+				});
+				$('#news').empty();
+				$('#loading').hide();
+				$('#news').append( items.join('') );
+				window.localStorage.setItem("news", items);
+				window.localStorage.setItem("time", hour);
+			});
+		}
+	</script>
+	<script>
+		function getArticle(id){
+			window.localStorage.setItem("article", id);
+			window.location = "article.html";
+		}
+	</script>
+</body>
+		
+</html>
